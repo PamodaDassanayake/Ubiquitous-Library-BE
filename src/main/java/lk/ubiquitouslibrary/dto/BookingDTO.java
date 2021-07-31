@@ -1,8 +1,5 @@
 package lk.ubiquitouslibrary.dto;
 
-import lk.digitallibrary.domain.Book;
-import lk.digitallibrary.domain.Booking;
-import lk.digitallibrary.domain.Video;
 import lombok.Data;
 
 import java.io.Serializable;

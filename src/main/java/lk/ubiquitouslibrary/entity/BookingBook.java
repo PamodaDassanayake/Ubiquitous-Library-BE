@@ -30,10 +30,6 @@ public class BookingBook implements Serializable {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
-    private Booking booking;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
