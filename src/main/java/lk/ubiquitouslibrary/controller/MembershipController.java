@@ -20,9 +20,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @Transactional
-public class MembershipResource {
+public class MembershipController {
 
-    private final Logger log = LoggerFactory.getLogger(MembershipResource.class);
+    private final Logger log = LoggerFactory.getLogger(MembershipController.class);
 
     private static final String ENTITY_NAME = "membership";
 
@@ -31,7 +31,7 @@ public class MembershipResource {
 
 //    private final MembershipService membershipService;
 
-    public MembershipResource(MembershipRepository membershipRepository) {
+    public MembershipController(MembershipRepository membershipRepository) {
         this.membershipRepository = membershipRepository;
 //        this.membershipService = membershipService;
     }

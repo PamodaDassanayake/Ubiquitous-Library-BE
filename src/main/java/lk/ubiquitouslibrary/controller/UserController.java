@@ -52,7 +52,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/admin")
-public class UserResource {
+public class UserController {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
         Arrays.asList(
@@ -70,13 +70,13 @@ public class UserResource {
         )
     );
 
-    private final Logger log = LoggerFactory.getLogger(UserResource.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
     private final UserRepository userRepository;
 
-    public UserResource(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
     }

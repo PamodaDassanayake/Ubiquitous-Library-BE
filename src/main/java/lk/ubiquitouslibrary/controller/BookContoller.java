@@ -28,15 +28,15 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 @Transactional
 @Slf4j
-public class BookResource {
+public class BookContoller {
 
-    private final Logger log = LoggerFactory.getLogger(BookResource.class);
+    private final Logger log = LoggerFactory.getLogger(BookContoller.class);
 
     private static final String ENTITY_NAME = "book";
 
     private final BookRepository bookRepository;
 
-    public BookResource(BookRepository bookRepository) {
+    public BookContoller(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 

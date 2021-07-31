@@ -24,9 +24,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @Transactional
-public class VideoResource {
+public class VideoController {
 
-    private final Logger log = LoggerFactory.getLogger(VideoResource.class);
+    private final Logger log = LoggerFactory.getLogger(VideoController.class);
 
     private static final String ENTITY_NAME = "video";
 

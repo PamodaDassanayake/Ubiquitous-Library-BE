@@ -103,6 +103,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()
             .antMatchers("/management/info").permitAll()
+            .antMatchers("/swagger-ui/**").permitAll()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .anyRequest().authenticated();
         // @formatter:on
     }
