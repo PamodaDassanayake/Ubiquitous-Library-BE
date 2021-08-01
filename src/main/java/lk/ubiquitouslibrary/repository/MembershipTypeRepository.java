@@ -1,6 +1,7 @@
 package lk.ubiquitouslibrary.repository;
 
 import lk.ubiquitouslibrary.entity.MembershipType;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MembershipTypeRepository extends CrudRepository<MembershipType, Long> {
+public interface MembershipTypeRepository extends JpaRepository<MembershipType, Long> {
 
     Optional<MembershipType> findByType(String type);
 
