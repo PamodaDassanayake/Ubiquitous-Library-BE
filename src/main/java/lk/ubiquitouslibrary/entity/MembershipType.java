@@ -1,5 +1,6 @@
 package lk.ubiquitouslibrary.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "membership_type")
 @Data
+@Builder
 public class MembershipType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +55,6 @@ public class MembershipType implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
