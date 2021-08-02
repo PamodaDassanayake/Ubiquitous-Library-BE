@@ -2,6 +2,7 @@ package lk.ubiquitouslibrary.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,10 +13,22 @@ import java.io.Serializable;
 @Entity
 @Table(name = "membership_type")
 @Data
-@Builder
+@NoArgsConstructor
 public class MembershipType implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Builder
+    public MembershipType(Long id, String type, Integer booksPerUser, Integer videosPerUser, Integer bookLendingDurationDays, Integer videoLendingDurationDays, Double annualFee, Double overdueChargesPerDay) {
+        this.id = id;
+        this.type = type;
+        this.booksPerUser = booksPerUser;
+        this.videosPerUser = videosPerUser;
+        this.bookLendingDurationDays = bookLendingDurationDays;
+        this.videoLendingDurationDays = videoLendingDurationDays;
+        this.annualFee = annualFee;
+        this.overdueChargesPerDay = overdueChargesPerDay;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

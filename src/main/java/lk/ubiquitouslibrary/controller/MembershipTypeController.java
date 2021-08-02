@@ -40,7 +40,7 @@ public class MembershipTypeController {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of membershipTypes in body.
      */
-    @GetMapping("/membership-types")
+    @GetMapping
     public List<MembershipType> getAllMembershipTypes() {
         log.debug("REST request to get all MembershipTypes");
         return membershipTypeRepository.findAll();

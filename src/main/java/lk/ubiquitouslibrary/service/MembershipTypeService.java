@@ -66,6 +66,7 @@ public class MembershipTypeService {
                 .build();
 
         try {
+            if (! membershipTypeRepository.existsById(1L))
             membershipTypeRepository.saveAll(Arrays.asList(membershipType,membershipType2,membershipType3,membershipType4));
         }catch (Exception e){
             log.warn("Membership Types exists. Skipping creation.");
