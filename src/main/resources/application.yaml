@@ -20,6 +20,6 @@ spring:
 logging:
   level:
     lk:
-      digitallibrary: DEBUG
+      ubiquitouslibrary: DEBUG
     root: INFO
 
