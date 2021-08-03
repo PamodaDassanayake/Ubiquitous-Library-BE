@@ -97,6 +97,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/api/authenticate").permitAll()
             .antMatchers("/api/register").permitAll()
+            .antMatchers("/api/membership-types").permitAll()
+            .antMatchers("/api/memberships").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
             .antMatchers("/api/**").authenticated()
