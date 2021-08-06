@@ -4,9 +4,15 @@ import lk.ubiquitouslibrary.entity.BookingBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data SQL repository for the BookingBook entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface BookingBookRepository extends JpaRepository<BookingBook, Long> {}
+public interface BookingBookRepository extends JpaRepository<BookingBook, Long> {
+
+    List<BookingBook> findAllByUser_Id(Long id);
+
+}

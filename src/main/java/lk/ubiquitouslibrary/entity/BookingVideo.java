@@ -1,7 +1,9 @@
 package lk.ubiquitouslibrary.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +15,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "booking_video")
 @Data
+@Builder
+@NoArgsConstructor
 public class BookingVideo implements Serializable {
 
     private static final long serialVersionUID = 1L;

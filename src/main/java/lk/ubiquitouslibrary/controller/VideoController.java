@@ -22,7 +22,7 @@ import java.util.Optional;
  * REST controller for managing {@link Video}.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/videos")
 @Transactional
 public class VideoController {
 

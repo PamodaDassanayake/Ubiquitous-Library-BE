@@ -42,7 +42,7 @@ public class Book implements Serializable {
     private Integer noOfCopies;
 
     @Size(max = 1000)
-    @Column(name = "image_url", length = 256)
+    @Column(name = "image_url", length = 1000)
     private String imageUrl;
 
     @Override

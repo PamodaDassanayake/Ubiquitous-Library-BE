@@ -99,6 +99,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/membership-types").permitAll()
             .antMatchers("/api/memberships").permitAll()
+            .antMatchers("/api/books/books","/api/books/search").permitAll()
+            .antMatchers("/api/videos/videos","/api/videos/search").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
             .antMatchers("/api/**").authenticated()
