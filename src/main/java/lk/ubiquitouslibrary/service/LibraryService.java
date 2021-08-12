@@ -41,6 +41,14 @@ public class LibraryService {
         this.bookingVideoRepository = bookingVideoRepository;
     }
 
+    public List<BookingBook> getAllBooksAdmin(){
+        return bookingBookRepository.findAll();
+    }
+
+    public List<BookingVideo> getAllVideosAdmin(){
+        return bookingVideoRepository.findAll();
+    }
+
     public BookingDTO reserve(BookingDTO bookingDTO) {
         User user = userRepository.getById(bookingDTO.getUserId());
 
