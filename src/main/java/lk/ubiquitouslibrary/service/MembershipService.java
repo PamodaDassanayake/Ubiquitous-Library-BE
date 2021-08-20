@@ -9,6 +9,10 @@ import lk.ubiquitouslibrary.repository.MembershipTypeRepository;
 import lk.ubiquitouslibrary.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.util.Arrays;
+
 @Service
 public class MembershipService {
 
@@ -32,6 +36,28 @@ public class MembershipService {
         membership.setType(membershipType);
 
         return membershipRepository.save(membership);
+    }
+
+    public Membership getUserMembership(Long userId){
+        Membership membership = membershipRepository.findByUser_IdAndValidTillGreaterThanEqual(userId, LocalDate.now());
+        if (membership!=null)
+            return membership;
+
+        throw new RuntimeException("No valid Membership found for User");
+    }
+
+    @PostConstruct
+    private void initMembership(){
+        Membership membership = Membership.builder()
+                .type(new MembershipType().id(2L))
+                .user(User.builder().id(2L).build())
+                .paymentDate(LocalDate.now())
+                .validTill(LocalDate.now().plusYears(1))
+                .build();
+
+        if (membershipTypeRepository.existsById(1L) && !membershipRepository.existsById(1L)) {
+            membershipRepository.save(membership);
+        }
     }
 
 }

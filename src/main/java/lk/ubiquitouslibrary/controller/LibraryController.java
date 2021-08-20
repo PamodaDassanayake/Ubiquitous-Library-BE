@@ -49,4 +49,14 @@ public class LibraryController {
     public ResponseEntity<List<BookingVideo>> getReservedVideos(){
         return ResponseEntity.ok(libraryService.getVideoBookingsForUser());
     }
+
+    @PostMapping("/pay/book/{id}/{amount}")
+    public BookingBook payForBookLend(@PathVariable Long id, @PathVariable Double amount){
+        return libraryService.payForBookLend(id,amount);
+    }
+
+    @PostMapping("/pay/video/{id}/{amount}")
+    public BookingVideo payForVideoLend(@PathVariable Long id, @PathVariable Double amount){
+        return libraryService.payForVideoLend(id,amount);
+    }
 }

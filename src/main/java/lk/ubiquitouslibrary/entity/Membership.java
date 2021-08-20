@@ -1,6 +1,9 @@
 package lk.ubiquitouslibrary.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +15,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "membership")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Membership implements Serializable {
 
     private static final long serialVersionUID = 1L;

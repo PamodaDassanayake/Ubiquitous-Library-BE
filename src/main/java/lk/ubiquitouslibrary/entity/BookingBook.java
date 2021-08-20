@@ -38,6 +38,12 @@ public class BookingBook implements Serializable {
     @ManyToOne
     private Book book;
 
+    @Column(name = "fee")
+    private Double fee;
+
+    @Column(name = "paid")
+    private Double paid;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

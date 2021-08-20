@@ -3,6 +3,7 @@ package lk.ubiquitouslibrary.controller;
 import lk.ubiquitouslibrary.dto.MembershipDTO;
 import lk.ubiquitouslibrary.entity.Membership;
 import lk.ubiquitouslibrary.repository.MembershipRepository;
+import lk.ubiquitouslibrary.service.MembershipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,13 @@ public class MembershipController {
 
     private final Logger log = LoggerFactory.getLogger(MembershipController.class);
 
-    private static final String ENTITY_NAME = "membership";
-
-
     private final MembershipRepository membershipRepository;
 
-//    private final MembershipService membershipService;
+    private final MembershipService membershipService;
 
-    public MembershipController(MembershipRepository membershipRepository) {
+    public MembershipController(MembershipRepository membershipRepository, MembershipService membershipService) {
         this.membershipRepository = membershipRepository;
-//        this.membershipService = membershipService;
+        this.membershipService = membershipService;
     }
 
     /**
@@ -49,10 +47,10 @@ public class MembershipController {
         if (membership.getId() != null) {
             throw new RuntimeException("idexists");
         }
-//        Membership result = membershipService.joinMembership(membership);
-        return ResponseEntity.created(new URI("/api/memberships/")).build();
-//            .created(new URI("/api/memberships/" + result.getId()))
-//            .body(result);
+        Membership result = membershipService.joinMembership(membership);
+        return ResponseEntity
+            .created(new URI("/api/memberships/" + result.getId()))
+            .body(result);
     }
 
     /**

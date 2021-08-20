@@ -25,6 +25,8 @@ public class BookingDTO implements Serializable {
 
     private Long userId;
 
+    private Double fee;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

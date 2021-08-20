@@ -39,6 +39,12 @@ public class BookingVideo implements Serializable {
     @ManyToOne
     private Video video;
 
+    @Column(name = "fee")
+    private Double fee;
+
+    @Column(name = "paid")
+    private Double paid;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

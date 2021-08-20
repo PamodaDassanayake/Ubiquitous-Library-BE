@@ -4,79 +4,107 @@ import lk.ubiquitouslibrary.dto.BookingDTO;
 import lk.ubiquitouslibrary.dto.CheckBookingDTO;
 import lk.ubiquitouslibrary.entity.*;
 import lk.ubiquitouslibrary.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class LibraryService {
 
-    MembershipRepository membershipRepository;
     UserRepository userRepository;
-    MembershipTypeRepository membershipTypeRepository;
     BookRepository bookRepository;
     VideoRepository videoRepository;
     BookingBookRepository bookingBookRepository;
     BookingVideoRepository bookingVideoRepository;
     UserService userService;
-
-    @Autowired
+    MembershipService membershipService;
     JdbcTemplate jdbcTemplate;
-
-    @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public LibraryService(MembershipRepository membershipRepository, UserRepository userRepository, MembershipTypeRepository membershipTypeRepository, BookRepository bookRepository, VideoRepository videoRepository, BookingBookRepository bookingBookRepository, BookingVideoRepository bookingVideoRepository) {
-        this.membershipRepository = membershipRepository;
-        this.userRepository = userRepository;
-        this.membershipTypeRepository = membershipTypeRepository;
-        this.bookRepository = bookRepository;
-        this.videoRepository = videoRepository;
-        this.bookingBookRepository = bookingBookRepository;
-        this.bookingVideoRepository = bookingVideoRepository;
-    }
 
-    public List<BookingBook> getAllBooksAdmin(){
+    public List<BookingBook> getAllBooksAdmin() {
         return bookingBookRepository.findAll();
     }
 
-    public List<BookingVideo> getAllVideosAdmin(){
+    public List<BookingVideo> getAllVideosAdmin() {
         return bookingVideoRepository.findAll();
     }
 
     public BookingDTO reserve(BookingDTO bookingDTO) {
         User user = userRepository.getById(bookingDTO.getUserId());
 
+        MembershipType membershipType = membershipService.getUserMembership(bookingDTO.getUserId()).getType();
+        Double fee = 0D;
+        long numberOfDays = ChronoUnit.DAYS.between(bookingDTO.getBookingStart(), bookingDTO.getBookingEnd());
+
         if (bookingDTO.getBook() != null) {
+            // Validate books lending limit
+            if (membershipType.getBooksPerUser() < countBookBookingsForUserOnDates(user.getId(), bookingDTO.getBookingStart(), bookingDTO.getBookingEnd())) {
+                throw new RuntimeException("Exceeding Book Lending limit for membership");
+            }
+
+            fee = membershipType.getOverdueChargesPerDay() * (
+                    numberOfDays > membershipType.getVideoLendingDurationDays() ? (numberOfDays - membershipType.getVideoLendingDurationDays()) : 0
+            );
+
             Book book = bookRepository.getById(bookingDTO.getBook());
             BookingBook bookingBook = BookingBook.builder()
                     .book(book)
                     .bookingStart(bookingDTO.getBookingStart())
                     .bookingEnd(bookingDTO.getBookingEnd())
                     .user(user)
+                    .fee(fee)
                     .build();
 
             bookingBookRepository.save(bookingBook);
         }
 
         if (bookingDTO.getVideo() != null) {
+            // Validate books lending limit
+            if (membershipType.getVideosPerUser() < countVideoBookingsForUserOnDates(user.getId(), bookingDTO.getBookingStart(), bookingDTO.getBookingEnd())) {
+                throw new RuntimeException("Exceeding Video Lending limit for membership");
+            }
+
+            fee = membershipType.getOverdueChargesPerDay() * (
+                    numberOfDays > membershipType.getVideoLendingDurationDays() ? (numberOfDays - membershipType.getVideoLendingDurationDays()) : 0
+            );
+
             Video video = videoRepository.getById(bookingDTO.getVideo());
             BookingVideo bookingVideo = BookingVideo.builder()
                     .video(video)
                     .bookingStart(bookingDTO.getBookingStart())
                     .bookingEnd(bookingDTO.getBookingEnd())
                     .user(user)
+                    .fee(fee)
                     .build();
 
             bookingVideoRepository.save(bookingVideo);
         }
 
+        bookingDTO.setFee(fee);
+
         return bookingDTO;
+    }
+
+    public BookingBook payForBookLend(Long booking, Double paid) {
+        BookingBook booking1 = bookingBookRepository.getById(booking);
+        booking1.setPaid(paid);
+        bookingBookRepository.save(booking1);
+        return booking1;
+    }
+
+    public BookingVideo payForVideoLend(Long booking, Double paid) {
+        BookingVideo booking1 = bookingVideoRepository.getById(booking);
+        booking1.setPaid(paid);
+        bookingVideoRepository.save(booking1);
+        return booking1;
     }
 
     public CheckBookingDTO checkBookBookings(CheckBookingDTO checkBookingDTO) {
@@ -103,14 +131,28 @@ public class LibraryService {
         );
     }
 
-    public List<BookingBook> getBookBookingsForUser(){
+    public List<BookingBook> getBookBookingsForUser() {
         User user = userService.getUserWithAuthorities().get();
         return bookingBookRepository.findAllByUser_Id(user.getId());
     }
 
-    public List<BookingVideo> getVideoBookingsForUser(){
+    public List<BookingVideo> getVideoBookingsForUser() {
         User user = userService.getUserWithAuthorities().get();
         return bookingVideoRepository.findAllByUser_Id(user.getId());
+    }
+
+    private long countBookBookingsForUserOnDates(Long userId, LocalDate start, LocalDate end) {
+        return bookingBookRepository.countAllByUser_IdAndBookingStartBetweenOrBookingEndBetween(
+                userId,
+                start, end, start, end
+        );
+    }
+
+    private long countVideoBookingsForUserOnDates(Long userId, LocalDate start, LocalDate end) {
+        return bookingVideoRepository.countAllByUser_IdAndBookingStartBetweenOrBookingEndBetween(
+                userId,
+                start, end, start, end
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 package lk.ubiquitouslibrary.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,22 +14,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "membership_type")
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class MembershipType implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Builder
-    public MembershipType(Long id, String type, Integer booksPerUser, Integer videosPerUser, Integer bookLendingDurationDays, Integer videoLendingDurationDays, Double annualFee, Double overdueChargesPerDay) {
-        this.id = id;
-        this.type = type;
-        this.booksPerUser = booksPerUser;
-        this.videosPerUser = videosPerUser;
-        this.bookLendingDurationDays = bookLendingDurationDays;
-        this.videoLendingDurationDays = videoLendingDurationDays;
-        this.annualFee = annualFee;
-        this.overdueChargesPerDay = overdueChargesPerDay;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +45,17 @@ public class MembershipType implements Serializable {
 
     @Column(name = "overdue_charges_per_day")
     private Double overdueChargesPerDay;
+
+    @Column(name = "video_price")
+    private Double videoPrice;
+
+    @Column(name = "book_price")
+    private Double bookPrice;
+
+    public MembershipType id(Long id){
+        this.setId(id);
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
