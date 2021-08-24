@@ -41,6 +41,11 @@ public class LibraryService {
         User user = userRepository.getById(bookingDTO.getUserId());
 
         MembershipType membershipType = membershipService.getUserMembership(bookingDTO.getUserId()).getType();
+
+        if (membershipType == null){
+            throw new RuntimeException("Please join a membership");
+        }
+
         Double fee = 0D;
         long numberOfDays = ChronoUnit.DAYS.between(bookingDTO.getBookingStart(), bookingDTO.getBookingEnd());
 
