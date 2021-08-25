@@ -45,6 +45,9 @@ public class Book implements Serializable {
     @Column(name = "image_url", length = 1000)
     private String imageUrl;
 
+    @Column(name = "description", length = 1000)
+    private String description;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
