@@ -32,12 +32,12 @@ public class LibraryController {
 
     @GetMapping("admin/reserved/books")
     public List<BookingBook> getAllReservedBooks(){
-        return libraryService.getBookBookingsForUser();
+        return libraryService.getAllBooksAdmin();
     }
 
     @GetMapping("admin/reserved/videos")
     public List<BookingVideo> getAllReservedVideos(){
-        return libraryService.getVideoBookingsForUser();
+        return libraryService.getAllVideosAdmin();
     }
 
     @PostMapping("/reserved/books")
