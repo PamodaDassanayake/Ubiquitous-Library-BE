@@ -19,6 +19,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingVideo implements Serializable {
 
     private static final long serialVersionUID = 1L;
