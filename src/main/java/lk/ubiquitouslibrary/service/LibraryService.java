@@ -68,7 +68,8 @@ public class LibraryService {
                     .fee(fee)
                     .build();
 
-            bookingBookRepository.save(bookingBook);
+            bookingBook = bookingBookRepository.save(bookingBook);
+            bookingDTO.setId(bookingBook.getId());
         }
 
         if (bookingDTO.getVideo() != null) {
@@ -90,7 +91,8 @@ public class LibraryService {
                     .fee(fee)
                     .build();
 
-            bookingVideoRepository.save(bookingVideo);
+            bookingVideo = bookingVideoRepository.save(bookingVideo);
+            bookingDTO.setId(bookingVideo.getId());
         }
 
         bookingDTO.setFee(fee);
