@@ -16,7 +16,9 @@ spring:
     port: 25
     username: apikey
     password: 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
-
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 logging:
   level:
     lk:
