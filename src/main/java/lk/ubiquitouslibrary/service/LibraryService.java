@@ -82,7 +82,7 @@ public class LibraryService {
 
             fee += membershipType.getVideoPrice();
 
-            fee = membershipType.getOverdueChargesPerDay() * (
+            fee += membershipType.getOverdueChargesPerDay() * (
                     numberOfDays > membershipType.getVideoLendingDurationDays() ? (numberOfDays - membershipType.getVideoLendingDurationDays()) : 0
             );
 
