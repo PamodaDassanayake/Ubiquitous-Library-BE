@@ -115,9 +115,10 @@ public class LibraryService {
     }
 
     public CheckBookingDTO checkBookBookings(CheckBookingDTO checkBookingDTO) {
-        String sql = "SELECT COUNT(BB.id) AS bb_count, B.no_of_copies FROM booking_book BB, book B " +
+        String sql = "SELECT COUNT(BB.id) AS bb_count, " +
+                "(SELECT B.no_of_copies FROM book B WHERE B.id = :book_id) AS book_count " +
+                "FROM booking_book BB " +
                 "WHERE BB.book_id = :book_id " +
-                "AND B.id = :book_id " +
                 "AND (" +
                     "(BB.booking_start <= :booking_start AND BB.booking_end >= :booking_end) " +
                     "OR (BB.booking_start >= :booking_start AND BB.booking_start <= :booking_end) " +
@@ -132,7 +133,7 @@ public class LibraryService {
         return namedParameterJdbcTemplate.query(sql, parameters,
                 rs -> {
                     rs.next();
-                    checkBookingDTO.setAvailableQty(rs.getInt("no_of_copies") - rs.getInt("bb_count"));
+                    checkBookingDTO.setAvailableQty(rs.getInt("book_count") - rs.getInt("bb_count"));
                     return checkBookingDTO;
                 }
         );
