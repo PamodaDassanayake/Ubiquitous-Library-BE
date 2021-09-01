@@ -55,7 +55,9 @@ public class LibraryService {
                 throw new RuntimeException("Exceeding Book Lending limit for membership");
             }
 
-            fee = membershipType.getOverdueChargesPerDay() * (
+            fee += membershipType.getBookPrice();
+
+            fee += membershipType.getOverdueChargesPerDay() * (
                     numberOfDays > membershipType.getVideoLendingDurationDays() ? (numberOfDays - membershipType.getVideoLendingDurationDays()) : 0
             );
 
@@ -77,6 +79,8 @@ public class LibraryService {
             if (membershipType.getVideosPerUser() < countVideoBookingsForUserOnDates(user.getId(), bookingDTO.getBookingStart(), bookingDTO.getBookingEnd())) {
                 throw new RuntimeException("Exceeding Video Lending limit for membership");
             }
+
+            fee += membershipType.getVideoPrice();
 
             fee = membershipType.getOverdueChargesPerDay() * (
                     numberOfDays > membershipType.getVideoLendingDurationDays() ? (numberOfDays - membershipType.getVideoLendingDurationDays()) : 0
