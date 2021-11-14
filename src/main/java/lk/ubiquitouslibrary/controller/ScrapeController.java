@@ -1,8 +1,8 @@
-package lk.lendabook.controller;
+package lk.ubiquitouslibrary.controller;
 
-import lk.lendabook.domain.BookFromScrape;
-import lk.lendabook.security.AuthoritiesConstants;
-import lk.lendabook.service.ScrapeService;
+import lk.ubiquitouslibrary.entity.BookScrape;
+import lk.ubiquitouslibrary.security.AuthoritiesConstants;
+import lk.ubiquitouslibrary.service.ScrapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/scrape")
-public class ScrapeResource {
+public class ScrapeController {
 
     @Autowired
     ScrapeService scrapeService;
@@ -32,7 +32,7 @@ public class ScrapeResource {
 
     @GetMapping
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public List<BookFromScrape> getScraped(){
+    public List<BookScrape> getScraped(){
         return scrapeService.loadScraped();
     }
 

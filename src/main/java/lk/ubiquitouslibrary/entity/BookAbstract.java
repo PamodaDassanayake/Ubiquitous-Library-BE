@@ -1,13 +1,19 @@
 package lk.ubiquitouslibrary.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Data
 @MappedSuperclass
-public class BookAbstract {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public abstract class BookAbstract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
