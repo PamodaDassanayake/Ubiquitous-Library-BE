@@ -10,9 +10,8 @@ import javax.validation.constraints.Size;
 
 @Data
 @MappedSuperclass
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 public abstract class BookAbstract {
 
     @Id

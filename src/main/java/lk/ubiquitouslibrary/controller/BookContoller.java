@@ -2,7 +2,9 @@ package lk.ubiquitouslibrary.controller;
 
 import io.swagger.annotations.ApiParam;
 import lk.ubiquitouslibrary.entity.Book;
+import lk.ubiquitouslibrary.entity.BookBuy;
 import lk.ubiquitouslibrary.repository.BookRepository;
+import lk.ubiquitouslibrary.repository.GoogleBooksRepository;
 import lk.ubiquitouslibrary.security.AuthoritiesConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -27,7 +29,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/books")
 @Transactional
-@Slf4j
 public class BookContoller {
 
     private final Logger log = LoggerFactory.getLogger(BookContoller.class);
@@ -36,8 +37,11 @@ public class BookContoller {
 
     private final BookRepository bookRepository;
 
-    public BookContoller(BookRepository bookRepository) {
+    private final GoogleBooksRepository googleBooksRepository;
+
+    public BookContoller(BookRepository bookRepository, GoogleBooksRepository googleBooksRepository) {
         this.bookRepository = bookRepository;
+        this.googleBooksRepository = googleBooksRepository;
     }
 
     /**
@@ -156,5 +160,10 @@ public class BookContoller {
         return ResponseEntity
             .noContent()
             .build();
+    }
+
+    @GetMapping("/google")
+    public List<BookBuy> serachGoogle(@RequestParam String q){
+        return googleBooksRepository.searchBook(q);
     }
 }

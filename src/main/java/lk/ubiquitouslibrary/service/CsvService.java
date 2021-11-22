@@ -49,7 +49,7 @@ public class CsvService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 ? * * *")
+    @Scheduled(cron = "0 0 0 ? * *")
     public void loadFromCSV(){
         List<BookCSV> books=null;
         try {

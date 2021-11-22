@@ -24,7 +24,7 @@ public class CSVBookRepository {
         StatefulBeanToCsv<BookAbstract> beanToCsv = new StatefulBeanToCsvBuilder<BookAbstract>(writer)
                 .withMappingStrategy(strategy)
                 .build();
-        beanToCsv.write((Iterator<BookAbstract>) books);
+        beanToCsv.write((List<BookAbstract>) books);
         writer.close();
     }
 
