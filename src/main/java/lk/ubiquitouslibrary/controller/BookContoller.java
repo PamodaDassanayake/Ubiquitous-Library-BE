@@ -166,21 +166,33 @@ public class BookContoller {
             .build();
     }
 
+    /**
+     * Search book from Google Books Repository
+     * */
     @GetMapping("/google")
     public List<BookBuy> serachGoogle(@RequestParam String q){
         return googleBooksRepository.searchBook(q);
     }
 
+    /**
+     * Request a unavailable book
+     * */
     @PutMapping("/request")
     public BookBuy request(@RequestBody BookBuy bookBuy){
         return bookBuyRepository.save(bookBuy);
     }
 
+    /**
+     * Get all requested books
+     * */
     @GetMapping ("/requested")
     public List<BookBuy> requested(){
         return bookBuyRepository.findAll();
     }
 
+    /**
+     * Add a requested book to the library. And delete it from request list
+     * */
     @PostMapping("/requested/purchased")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Book> boughtFromListBook(@RequestBody Book book) throws URISyntaxException {
