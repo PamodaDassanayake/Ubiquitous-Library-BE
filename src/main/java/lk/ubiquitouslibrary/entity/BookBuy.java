@@ -2,8 +2,12 @@ package lk.ubiquitouslibrary.entity;
 
 import lombok.Builder;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "book_buy")
 public class BookBuy extends BookAbstract{
 
     @Builder

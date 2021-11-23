@@ -3,6 +3,7 @@ package lk.ubiquitouslibrary.controller;
 import io.swagger.annotations.ApiParam;
 import lk.ubiquitouslibrary.entity.Book;
 import lk.ubiquitouslibrary.entity.BookBuy;
+import lk.ubiquitouslibrary.repository.BookBuyRepository;
 import lk.ubiquitouslibrary.repository.BookRepository;
 import lk.ubiquitouslibrary.repository.GoogleBooksRepository;
 import lk.ubiquitouslibrary.security.AuthoritiesConstants;
@@ -39,9 +40,12 @@ public class BookContoller {
 
     private final GoogleBooksRepository googleBooksRepository;
 
-    public BookContoller(BookRepository bookRepository, GoogleBooksRepository googleBooksRepository) {
+    private final BookBuyRepository bookBuyRepository;
+
+    public BookContoller(BookRepository bookRepository, GoogleBooksRepository googleBooksRepository, BookBuyRepository bookBuyRepository) {
         this.bookRepository = bookRepository;
         this.googleBooksRepository = googleBooksRepository;
+        this.bookBuyRepository = bookBuyRepository;
     }
 
     /**
@@ -166,4 +170,23 @@ public class BookContoller {
     public List<BookBuy> serachGoogle(@RequestParam String q){
         return googleBooksRepository.searchBook(q);
     }
+
+    @PutMapping("/request")
+    public BookBuy request(@RequestBody BookBuy bookBuy){
+        return bookBuyRepository.save(bookBuy);
+    }
+
+    @GetMapping ("/requested")
+    public List<BookBuy> requested(){
+        return bookBuyRepository.findAll();
+    }
+
+    @PostMapping("/requested/purchased")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Book> boughtFromListBook(@RequestBody Book book) throws URISyntaxException {
+        bookBuyRepository.deleteById(book.getId());
+        book.setId(null);
+        return createBook(book);
+    }
+
 }
