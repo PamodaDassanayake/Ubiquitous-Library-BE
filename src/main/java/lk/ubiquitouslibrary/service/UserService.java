@@ -312,4 +312,24 @@ public class UserService {
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
+
+    @Transactional
+    public void deactivateUser(String login){
+        Optional.of(login)
+                .flatMap(userRepository::findOneByLogin)
+                .ifPresent(user -> {
+                    user.setActivated(false);
+                    userRepository.save(user);
+                });
+    }
+
+    @Transactional
+    public void activateUser(String login){
+        Optional.of(login)
+                .flatMap(userRepository::findOneByLogin)
+                .ifPresent(user -> {
+                    user.setActivated(true);
+                    userRepository.save(user);
+                });
+    }
 }

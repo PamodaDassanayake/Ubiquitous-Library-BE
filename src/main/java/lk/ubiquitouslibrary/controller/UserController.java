@@ -179,7 +179,7 @@ public class UserController {
 
     /**
      * {@code DELETE /admin/users/:login} : delete the "login" User.
-     *
+     *b
      * @param login the login of the user to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
@@ -190,6 +190,26 @@ public class UserController {
         userService.deleteUser(login);
         HttpHeaders headers = new HttpHeaders();
         headers.add("userManagement.deleted", login);
+        return ResponseEntity.noContent().headers(headers).build();
+    }
+
+    @PutMapping("/users/deactivate/{login}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> deactivateUser(@PathVariable String login) {
+        log.debug("REST request to deactivate User: {}", login);
+        userService.deactivateUser(login);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("userManagement.deactivated", String.valueOf(login));
+        return ResponseEntity.noContent().headers(headers).build();
+    }
+
+    @PutMapping("/users/activate/{login}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> activateUser(@PathVariable String login) {
+        log.debug("REST request to activate User: {}", login);
+        userService.activateUser(login);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("userManagement.deactivated", String.valueOf(login));
         return ResponseEntity.noContent().headers(headers).build();
     }
 }
