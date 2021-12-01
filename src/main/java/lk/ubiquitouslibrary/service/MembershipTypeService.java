@@ -33,6 +33,8 @@ public class MembershipTypeService {
                 .videoLendingDurationDays(14)
                 .annualFee(5000D)
                 .overdueChargesPerDay(5D)
+                .bookPrice(20D)
+                .videoPrice(40D)
                 .build();
 
         MembershipType membershipType2 = MembershipType.builder()
@@ -43,6 +45,8 @@ public class MembershipTypeService {
                 .videoLendingDurationDays(10)
                 .annualFee(3000D)
                 .overdueChargesPerDay(10D)
+                .bookPrice(30D)
+                .videoPrice(60D)
                 .build();
 
         MembershipType membershipType3 = MembershipType.builder()
@@ -53,6 +57,8 @@ public class MembershipTypeService {
                 .videoLendingDurationDays(7)
                 .annualFee(2000D)
                 .overdueChargesPerDay(15D)
+                .bookPrice(40D)
+                .videoPrice(80D)
                 .build();
 
         MembershipType membershipType4 = MembershipType.builder()
@@ -63,6 +69,8 @@ public class MembershipTypeService {
                 .videoLendingDurationDays(5)
                 .annualFee(1000D)
                 .overdueChargesPerDay(20D)
+                .bookPrice(50D)
+                .videoPrice(100D)
                 .build();
 
         try {

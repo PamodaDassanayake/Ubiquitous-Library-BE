@@ -5,6 +5,7 @@ import lk.ubiquitouslibrary.dto.CheckBookingDTO;
 import lk.ubiquitouslibrary.entity.BookingBook;
 import lk.ubiquitouslibrary.entity.BookingVideo;
 import lk.ubiquitouslibrary.service.LibraryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/library")
+@Slf4j
 public class LibraryController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class LibraryController {
 
     @PostMapping("/check")
     public ResponseEntity<CheckBookingDTO> check(@RequestBody CheckBookingDTO bookingDTO){
+        log.info("Request to check availability");
         bookingDTO = libraryService.checkBookBookings(bookingDTO);
         return ResponseEntity.ok(bookingDTO);
     }
