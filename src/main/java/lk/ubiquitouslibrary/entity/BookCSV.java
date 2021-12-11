@@ -1,4 +1,4 @@
-package lk.lendabook.domain;
+package lk.ubiquitouslibrary.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,10 +13,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "book_csv")
 @DynamicUpdate
-public class BookFromCSV extends AbstractBook implements Serializable {
+public class BookCSV extends BookAbstract implements Serializable {
 
     @Column(name = "difference")
-    private int difference;
+    protected int difference;
 
     public int getDifference() {
         return difference;

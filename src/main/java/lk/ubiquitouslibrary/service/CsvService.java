@@ -1,15 +1,17 @@
-package lk.lendabook.service;
+package lk.ubiquitouslibrary.service;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import lk.lendabook.domain.Book;
-import lk.lendabook.domain.BookFromCSV;
-import lk.lendabook.repository.BookCSVRepository;
-import lk.lendabook.repository.BookFromCSVRepository;
-import lk.lendabook.repository.BookRepository;
+import lk.ubiquitouslibrary.entity.Book;
+import lk.ubiquitouslibrary.entity.BookCSV;
+import lk.ubiquitouslibrary.repository.BookCSVRepository;
+import lk.ubiquitouslibrary.repository.BookRepository;
+import lk.ubiquitouslibrary.repository.csv.CSVBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,12 +24,13 @@ public class CsvService {
     BookRepository bookRepository;
 
     @Autowired
-    BookCSVRepository csvRepository;
+    CSVBookRepository csvRepository;
 
     @Autowired
-    BookFromCSVRepository bookFromCSVRepository;
+    BookCSVRepository bookCSVRepository;
 
-    public void generateCSV(){
+    @PostConstruct
+    public void generateInitialCSV(){
         List<Book> books = bookRepository.findAll();
         try {
             csvRepository.writeBooks(books);
@@ -36,8 +39,19 @@ public class CsvService {
         }
     }
 
-    public List<BookFromCSV> loadFromCSV(){
-        List<BookFromCSV> books=null;
+    public void generateCSV(){
+        List<BookCSV> books = bookCSVRepository.findAll();
+
+        try {
+            csvRepository.writeBooks(books);
+        } catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(cron = "0 0 0 ? * * *")
+    public void loadFromCSV(){
+        List<BookCSV> books=null;
         try {
             books=csvRepository.readBooks();
         } catch (FileNotFoundException e) {
@@ -52,16 +66,19 @@ public class CsvService {
                 }
             });
 
-            bookFromCSVRepository.saveAll(books);
+            bookCSVRepository.saveAll(books);
         }
-        return books;
+    }
+
+    public List<BookCSV> getLoadedUpdates(){
+        return bookCSVRepository.findAll();
     }
 
     public List<Book> applyChangeFromCSV(List<Long> ids){
         List<Book> books = new ArrayList<>();
         ids.forEach(id -> {
             Book book = bookRepository.findById(id).get();
-            BookFromCSV fromCSV = bookFromCSVRepository.findById(id).get();
+            BookCSV fromCSV = bookCSVRepository.findById(id).get();
 
             book.setTitle(fromCSV.getTitle());
             book.setAuthor(fromCSV.getAuthor());
@@ -70,10 +87,13 @@ public class CsvService {
             book.setPublishYear(fromCSV.getPublishYear());
             book.setNoOfCopies(fromCSV.getNoOfCopies());
 
+            fromCSV.setDifference(0);
             bookRepository.save(book);
+            bookCSVRepository.save(fromCSV);
 
             books.add(book);
         });
+        generateCSV();
         return books;
     }
 }
