@@ -166,7 +166,9 @@ public class Scraper{
                     bookDescription = bookDescription.trim().substring(0,1000);
                 }
 
-                authors = authors.trim();
+                if (authors.length()>1000){
+                    authors = authors.substring(0,1000).trim();
+                }
 
                 BookScrape bookToAdd = (BookScrape) BookScrape.builder()
                         .author(authors)
