@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -35,7 +37,13 @@ public class Scraper{
              * Here we create a document object,
              * The we use JSoup to fetch the website.
              */
-            Document doc = Jsoup.connect("https://lk1lib.org/popular.php/?language=Java").get();
+            System.setProperty("webdriver.gecko.driver","./geckodriver.exe");
+            WebDriver driver = new FirefoxDriver();
+            driver.get("https://lk1lib.org/popular.php/?language=Java");
+
+            Document doc = Jsoup.parse(driver.getPageSource());
+
+            driver.quit();
 
             /**
              * With the document fetched,

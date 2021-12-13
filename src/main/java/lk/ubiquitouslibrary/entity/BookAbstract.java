@@ -27,7 +27,7 @@ public abstract class BookAbstract {
     @Column(name = "edition")
     protected Integer edition;
 
-    @Column(name = "author")
+    @Column(name = "author", length = 1000)
     protected String author;
 
     @Column(name = "publisher")
