@@ -49,13 +49,15 @@ public class CsvService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 ? * *")
+    @Scheduled(cron = "0 * * * * *")
     public void loadFromCSV(){
         List<BookCSV> books=null;
         try {
             books=csvRepository.readBooks();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            generateInitialCSV();
+            return;
         }
 
         if (books != null){

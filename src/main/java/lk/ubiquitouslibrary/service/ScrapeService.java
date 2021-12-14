@@ -18,13 +18,13 @@ public class ScrapeService {
     BookRepository bookRepository;
 
     @Autowired
-    Scraper scraper1;
+    Scraper scraper;
 
     public void scrapeBooks(){
-        if (!scraper1.isRunning()) {
+        if (!scraper.isRunning()) {
             repository.deleteAllInBatch();
             Thread thread = new Thread(() -> {
-                List<BookScrape> books = scraper1.scrape();
+                List<BookScrape> books = scraper.scrape();
                 repository.saveAll(books);
             });
             thread.start();
@@ -36,7 +36,7 @@ public class ScrapeService {
     }
 
     public boolean isScraperRunning(){
-        return scraper1.isRunning();
+        return scraper.isRunning();
     }
 
 //    public Book addToLibrary(Long idFromScrape){

@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +39,8 @@ public class Scraper{
              * The we use JSoup to fetch the website.
              */
             System.setProperty("webdriver.gecko.driver","./geckodriver.exe");
-            WebDriver driver = new FirefoxDriver();
+            System.setProperty("webdriver.chrome.driver","./chromedriver.exe");
+            WebDriver driver = new ChromeDriver();
             driver.get("https://lk1lib.org/popular.php/?language=Java");
 
             Document doc = Jsoup.parse(driver.getPageSource());
@@ -73,6 +75,10 @@ public class Scraper{
              */
             for (Element repository : repositories) {
                 count ++;
+
+                if (count>50){
+                    break;
+                }
 
                 //Fetching the book from the list
                 Elements links = repository.select("a[href]");
