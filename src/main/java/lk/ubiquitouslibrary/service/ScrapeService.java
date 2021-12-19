@@ -20,22 +20,28 @@ public class ScrapeService {
     @Autowired
     Scraper scraper;
 
-    public void scrapeBooks(){
+    public void scrapeBooks() {
         if (!scraper.isRunning()) {
             repository.deleteAllInBatch();
             Thread thread = new Thread(() -> {
                 List<BookScrape> books = scraper.scrape();
-                repository.saveAll(books);
+                books.forEach(bookScrape -> {
+                    try {
+                        repository.save(bookScrape);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             });
             thread.start();
         }
     }
 
-    public List<BookScrape> loadScraped(){
+    public List<BookScrape> loadScraped() {
         return repository.findAll();
     }
 
-    public boolean isScraperRunning(){
+    public boolean isScraperRunning() {
         return scraper.isRunning();
     }
 
